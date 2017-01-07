@@ -1,0 +1,2 @@
+const CANVAS_WIDTH = 1080;
+const CANVAS_HEIGHT = 720;
