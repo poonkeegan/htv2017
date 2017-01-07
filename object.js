@@ -16,6 +16,15 @@ function Vehicle(x, y, w, h, a, accel) {
 
 }
 
+function Road(w, s, p) {
+	this.width = w;
+	// Which side of the screen(top, left) does this
+	// road start from
+	this.side = s;
+	// How far from the origin does this road start from
+	this.position = p;
+}
+
 var vehicle = {
 }
 
