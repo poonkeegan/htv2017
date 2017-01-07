@@ -6,7 +6,12 @@
     <title>BreakOut</title>
   </head>
   <body>
-    <script src="main.js"></script>
-
+	<script src="main.js"></script>
+	<input type="button" id = "start" onclick="drawCanvas();" value = "Start"></input>
+	<p id = "formtext"> Choose an intersection type</p>
+	<form id = "interform">
+		<input type="radio" name="intersection" value="4-way" id = "4way"> 4 Way </input>
+		<input type="radio" name="intersection" value="T" id = "T"> T </input>		
+	</form>
   </body>
 </html>
