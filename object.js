@@ -1,1 +1,5 @@
+var vehicle = {
+}
 
+var road = {
+}
