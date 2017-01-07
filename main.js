@@ -12,6 +12,7 @@ function drawCanvas()
 	var fourwaybutton = document.getElementById("4way");
 	var iform = document.getElementById("interform");
 	var Tchecked = Tbutton.checked;
+	var formtext = document.getElementById("formtext");
 	//if more than 2 intersections add more variables and booleans
 	if(!running)
 	{
@@ -25,17 +26,22 @@ function drawCanvas()
 		{
 			create4Way();
 		}
+		ctx.fillStyle=("#BED0BE");
+		ctx.fillRect(100,100,35,70);
 		document.body.appendChild(canvas);
 		sbutton.value="Stop";
 		running = true;
 		iform.style.visibility = "hidden";
+		formtext.style.visibility = "hidden";
 	}
 	else
 	{
 		ctx.clearRect(0,0,canvas.width,canvas.height);
+		ctx.fillStyle=("#000000");
 		sbutton.value="Start";
 		running = false;
 		iform.style.visibility = "visible";
+		formtext.style.visibility = "visible";
 	}
 }
 
