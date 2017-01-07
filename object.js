@@ -26,13 +26,15 @@ function Vehicle(x, y, w, h, a) {
 
 }
 
-function Road(w, s, p) {
+function Road(w, s, p, l) {
 	this.width = w;
 	// Which side of the screen(top, left) does this
 	// road start from
 	this.side = s;
 	// How far from the origin does this road start from
 	this.position = p;
+	// speed limit
+	this.limit = l
 	this.draw = function (end){
 		if(this.side == 0){
 			ctx.fillRect(this.position, 0, this.width, end);
