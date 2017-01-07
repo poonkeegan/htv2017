@@ -1,5 +1,3 @@
-
-
 function Vehicle(x, y, w, h, a) {
 	this.x = x;
 	this.y = y;
@@ -23,6 +21,7 @@ function Vehicle(x, y, w, h, a) {
 		ctx.rotate(angle);
 		ctx.strokeRect(this.x, this.y, this.width, this.height);
 		//Strok Erect
+		//TBTacoLeft TBTacoCheesePull TBTacoRight
 	}
 
 }
@@ -35,16 +34,16 @@ function Road(w, s, p) {
 	// How far from the origin does this road start from
 	this.position = p;
 	this.draw = function (end){
-		if(side == 0){
-			ctx.strokeRect(this.position, 0, this.width, end);
-		}else if (side == 1){
-			ctx.strokeRect(0, this.position, end, this.width);
+		if(this.side == 0){
+			ctx.fillRect(this.position, 0, this.width, end);
+		}else if (this.side == 1){
+			ctx.fillRect(0, this.position, end, this.width);
 
-		}else if (side == 2){
-			ctx.strokeRect(end, this.position, CANVAS_WIDTH - end, this.width);
+		}else if (this.side == 2){
+			ctx.fillRect(end, this.position, CANVAS_WIDTH - end, this.width);
 
-		}else if (side == 3){
-			ctx.strokeRect(this.position, end, this.width, CANVAS_HEIGHT - end);
+		}else if (this.side == 3){
+			ctx.fillRect(this.position, end, this.width, CANVAS_HEIGHT - end);
 
 		}
 	}
