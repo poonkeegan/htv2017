@@ -7,6 +7,7 @@ function Vehicle(x, y, w, h, a) {
 	this.angle = a;
 	this.accel = 0;
 	this.speed = 4;
+	this.maxSpeed = 4;
     this.turn = null;
 	this.xspeed = function () {
 		return Math.sin(rad(this.angle)) * this.speed;
@@ -25,6 +26,11 @@ function Vehicle(x, y, w, h, a) {
             {
                 this.angle -= 2;
             }
+        }
+        this.speed += this.accel;
+        if(this.speed > this.maxSpeed){
+        	this.speed = this.maxSpeed;
+        	this.accel--;
         }
         this.x += this.xspeed();
         this.y += this.yspeed();

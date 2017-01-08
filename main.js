@@ -154,7 +154,7 @@ function drawCanvas()
 }
 */
 function master(){
-	//handleCollision();
+	handleCollision();
 	ctx.clearRect(0,0,canvas.width,canvas.height);
 	ctx.strokeRect(0,0,canvas.width,canvas.height);
 	horizontalRoad.draw(intPoint.x);
@@ -170,21 +170,21 @@ function master(){
 	console.log(vehicles);
 	window.requestAnimationFrame(master);
 }
-/*
+
 function handleCollision(){
 	var colliding = collidingCars();
 	// Figure out which vehicles sets aren't colliding anymore
 	var notColliding = collVeh.difference(colliding);
 	for(let i of notColliding){
-		i[0].accel = 1;
+		i[1].accel = 1;
 	}
 	// Figure out which are
 	for(let i of colliding){	
 		//Slow down i[0]
-		i[0].accel = -1;
+		i[1].accel = -1;
 	}
 	collVeh = colliding;
-}*/
+}
 function collidingCars()
 {
 	var colliding = new Set();
@@ -192,7 +192,7 @@ function collidingCars()
 		for (j = i + 1; j < vehicles.length; j++){
 			var xDistSq = (vehicles[i].x - vehicles[j].x) * (vehicles[i].x - vehicles[j].x);
 			var yDistSq = (vehicles[i].y - vehicles[j].y) * (vehicles[i].y - vehicles[j].y);
-			if (xDistSq + yDistSq < 3600){ // < radius^2 (radius = 60)
+			if (xDistSq + yDistSq < 100*100){ // < radius^2 
 				colliding.add([vehicles[i], vehicles[j]]);
 			}
 		}
