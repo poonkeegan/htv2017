@@ -10,10 +10,14 @@ formtext = document.getElementById("formtext");
 vehicles = [];
 var exits = [];
 var intPoint = null;
+var timeinterval = null;
+var carstogen = null;
 //creating roads
+var spawnState = true;
 function start()
 {
 	exits = [];
+	vehicles = [];
 	Tchecked = (Tbutton == null)?false:Tbutton.checked;
 	var randroad= Math.floor(Math.random()*4);
 	var randlenv = (0.85*canvas.height)*Math.random()+(canvas.width*0.1);
@@ -62,43 +66,56 @@ function start()
 	master();
 }
 
-function spawncar()
+
+function spawn_car()
 {
-	for (i = 0; i<num_cars; i++)
+	for (i=0;i<carstogen;i++)
 	{
 		if (!Tchecked)
 		{
-			start_position = math.floor(3*math.random()+1);
-			
+			start_position = Math.floor(4*Math.random());
+
 		}
 		else
 		{
-			start_position = math.floor(2*math.random());
-			start_position = exits[start_position]
+			start_position = Math.floor(3*Math.random());
+			start_position = exits[start_position];
 				
 		}
 		if (start_position == 0)
-			{
-				x = verticalroad.position+6
-				y = 0
-			}
-			elif (start_position == 1)
-			{
-				x = 0
-				y = horizontalroad.position+6
-			}
-			elif (start_position == 2)
-			{
-				x = canvas.width
-				y=horizontalroad.position+6
-			}
-			elif (start_position == 3)
-			{
-				x = verticalroad.position+6
-				y = canvas.height
-			}
+		{
+			x = verticalRoad.position+6;
+			y = 0;
+			a = rad(0);
+		}
+		else if (start_position == 1)
+		{
+			x = 0;
+			y = horizontalRoad.position+6;
+			a = rad(90);
+		}
+		else if (start_position == 2)
+		{
+			x = canvas.width - 30;
+			y = horizontalRoad.position+6;
+			a = rad(270);
+		}
+		else if (start_position == 3)
+		{
+			x = verticalRoad.position+6;
+			y = canvas.height - 60;
+			a = rad(180);
+		}
+		vehicles.push(new Vehicle(x,y,30,60,a));
+	}
+}
 
-		vehicles.push(new Vehicle(x,y,30,60,0))
+function drawCar()
+{
+	for(i=0;i<vehicles.length;i++)
+	{
+		vehicles[i].draw();
+		//console.log(carstogen);
 	}
 }
 //running is a var to show whether the canvas has been drawn or not
@@ -147,24 +164,30 @@ function drawCanvas()
 }
 */
 function master(){
-	if(intPoint != null){window.alert(horizontalRoad.side);}
 	ctx.clearRect(0,0,canvas.width,canvas.height);
 	ctx.strokeRect(0,0,canvas.width,canvas.height);
 	horizontalRoad.draw(intPoint.x);
 	verticalRoad.draw(intPoint.y);
 	sliderControl();
+	if(spawnState)
+	{
+		setInterval(spawn_car, timeinterval*1000);
+		spawnState = false;
+	}
+	drawCar();
+	console.log(vehicles);
 	window.requestAnimationFrame(master);
 }
+
 function sliderControl()
 {
-	var timeinterval = document.getElementById("timeslider");
-	document.getElementById("timeinterval").innerHTML = timeinterval.value;
-	var carstogen = document.getElementById("carslider");
-	document.getElementById("carinterval").innerHTML = carstogen.value;
+	timeslider = document.getElementById("timeslider");
+	document.getElementById("timeinterval").innerHTML = timeslider.value;
+	timeinterval = timeslider.value;
+	carslider = document.getElementById("carslider");
+	document.getElementById("carinterval").innerHTML = carslider.value;
+	carstogen = carslider.value;
 }
-function test()
-{
-	window.alert("butt");
-}
+
 document.getElementById("start").onclick = start;
 document.body.appendChild(canvas);

@@ -18,8 +18,13 @@ function Vehicle(x, y, w, h, a) {
 		this.y += this.yspeed();
 	}
 	this.draw = function (){
-		ctx.rotate(angle);
-		ctx.strokeRect(this.x, this.y, this.width, this.height);
+		ctx.save();
+		ctx.translate(this.x + this.width/2, this.y + this.height/2);
+		ctx.rotate(this.angle);
+		ctx.fillStyle=("#FF0000");
+		ctx.fillRect(0, 0, this.width, this.height);
+		ctx.fillStyle=("#000000");
+		ctx.restore();
 		//Strok Erect
 		//TBTacoLeft TBTacoCheesePull TBTacoRight
 	}
