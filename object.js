@@ -23,7 +23,7 @@ function Vehicle(x, y, w, h, a) {
 		ctx.rotate(this.angle);
 		ctx.fillStyle=("#FF0000");
 		ctx.fillRect(0, 0, this.width, this.height);
-		ctx.fillStyle=("#000000");
+		ctx.fillStyle=("#6a6a6a");
 		ctx.restore();
 		//Strok Erect
 		//TBTacoLeft TBTacoCheesePull TBTacoRight
