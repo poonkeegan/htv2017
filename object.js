@@ -6,22 +6,33 @@ function Vehicle(x, y, w, h, a) {
 	this.height = h;
 	this.angle = a;
 	this.accel = 0;
-	this.speed = 0;
+	this.speed = 4;
+    this.turn = null;
 	this.xspeed = function () {
-		return Math.cos(this.angle) * this.speed;
+		return Math.sin(rad(this.angle)) * this.speed;
 	};
 	this.yspeed = function () {
-		return Math.cos(this.angle) * this.speed;
+		return Math.cos(rad(this.angle)) * this.speed;
 	};
 	this.update = function() {
-		this.speed += this.accel;
-		this.x += this.xspeed();
-		this.y += this.yspeed();
+		if(this.turn && this.angle != this.turn)
+        {
+            if(this.angle < this.turn)
+            {
+                this.angle += 2;
+            }
+            else if(this.angle > this.turn)
+            {
+                this.angle -= 2;
+            }
+        }
+        this.x += this.xspeed();
+        this.y += this.yspeed();
 	}
 	this.draw = function (){
 		ctx.save();
-		ctx.translate(this.x + this.width/2, this.y + this.height/2);
-		ctx.rotate(this.angle);
+		ctx.translate(this.x, this.y);
+		ctx.rotate(rad(-this.angle));
 		//ctx.fillStyle=("#FF0000");
 		//ctx.fillRect(0, 0, this.width, this.height);
 		//ctx.fillStyle=("#6a6a6a");

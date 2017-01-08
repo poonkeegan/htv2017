@@ -8,6 +8,7 @@ iform = document.getElementById("interform");
 formtext = document.getElementById("formtext");
 //roads = [];
 vehicles = [];
+var spawnPoints = [];
 var exits = [];
 var intPoint = null;
 var timeinterval = null;
@@ -25,7 +26,9 @@ function start()
 	var randroad= Math.floor(Math.random()*4);
 	var randlenv = (0.85*canvas.height)*Math.random()+(canvas.width*0.1);
 	var randlenh = (0.3*canvas.width)*Math.random()+(canvas.height*0.1);
+    spawnPoints.length = 0;
 	var speed_lim = 1;
+    var offset = 35;
 	if(randroad == 0 || randroad == 3)
 	{
 		verticalRoad = new Road(ROAD_WIDTH, randroad, randlenv, speed_lim);
@@ -36,24 +39,31 @@ function start()
 		verticalRoad = new Road(ROAD_WIDTH, 0, randlenv, speed_lim);
 		horizontalRoad = new Road(ROAD_WIDTH, randroad, randlenh, speed_lim);
 	}
-	
+	//if it is a T intersection one of the roads will be cut off
 	if(Tchecked)
 	{
+        //Randomly select one of the 2 roads to be cut off (0 or 1)
 		if (Math.round(Math.random()))
 		{
 			verticalRoad.side = 0;
 			intPoint = new Point(verticalRoad.position+1, CANVAS_HEIGHT);
-			exits.push(0);
-			exits.push(horizontalRoad.side);
-			exits.push(3);
+			spawnPoints.push(new Point(verticalRoad.position + offset, 1),
+            new Point(verticalRoad.position + verticalRoad.width - offset, CANVAS_HEIGHT-1));
+            if(horizontalRoad.side == 1)
+                spawnPoints.push(new Point(1, horizontalRoad.position + horizontalRoad.width - offset));
+            else if(horizontalRoad.side == 2)
+                spawnPoints.push(new Point(CANVAS_WIDTH - 1, horizontalRoad.position + offset));
 		}
 		else
 		{
 			horizontalRoad.side = 1;
 			intPoint = new Point(CANVAS_WIDTH, horizontalRoad.position+1);
-			exits.push(1);
-			exits.push(2);
-			exits.push(verticalRoad.side);
+			spawnPoints.push(new Point(1, horizontalRoad.position + horizontalRoad.width - offset),
+            new Point(CANVAS_WIDTH - 1, horizontalRoad.position + offset));
+            if(verticalRoad.side == 0)
+                spawnPoints.push(new Point(verticalRoad.position + offset, 1)); 
+            else
+                spawnPoints.push(new Point(verticalRoad.position + verticalRoad.width - offset, CANVAS_HEIGHT-1));
 		}
 	}
 	else
@@ -61,10 +71,10 @@ function start()
 		horizontalRoad.side = 1;
 		verticalRoad.side = 0;
 		intPoint = new Point(CANVAS_WIDTH, CANVAS_HEIGHT);
-		exits.push(0);
-		exits.push(1);
-		exits.push(2);
-		exits.push(3);
+		spawnPoints.push(new Point(verticalRoad.position + offset, 1),
+        new Point(verticalRoad.position + verticalRoad.width - offset, CANVAS_HEIGHT-1),
+        new Point(1, horizontalRoad.position + horizontalRoad.width - offset),
+        new Point(CANVAS_WIDTH - 1, horizontalRoad.position + offset));
 	}
 	master();
 }
@@ -74,52 +84,29 @@ function spawn_car()
 {
 	for (i=0;i<carstogen;i++)
 	{
-		if (!Tchecked)
-		{
-			start_position = Math.floor(4*Math.random());
-
-		}
-		else
-		{
-			start_position = Math.floor(3*Math.random());
-			start_position = exits[start_position];
-				
-		}
-		if (start_position == 0)
-		{
-			x = verticalRoad.position+((ROAD_WIDTH)/12);
-			y = -30;
-			a = rad(0);
-		}
-		else if (start_position == 1)
-		{
-			x = 40;
-			y = horizontalRoad.position+((3*ROAD_WIDTH)/5);
-			a = rad(90);
-		}
-		else if (start_position == 2)
-		{
-			x = canvas.width - 70;
-			y = horizontalRoad.position+((ROAD_WIDTH)/12);
-			a = rad(270);
-		}
-		else if (start_position == 3)
-		{
-			x = verticalRoad.position+((9*ROAD_WIDTH)/12);
-			y = canvas.height-30;
-			a = rad(180);
-		}
-		vehicles.push(new Vehicle(x,y,30,60,a));
+		var randPoint = Math.floor(Math.random()*spawnPoints.length);
+        var point = spawnPoints[randPoint];
+        if(point.x == 1)
+            a = EAST;
+        else if(point.x == CANVAS_WIDTH -1)
+            a = WEST;
+        else if(point.y == 1)
+            a = SOUTH;
+        else if(point.y == CANVAS_HEIGHT-1)
+            a = NORTH;
+		vehicles.push(new Vehicle(spawnPoints[randPoint].x, spawnPoints[randPoint].y, 30, 60, a));
 	}
 }
 
-function drawCar()
+function updateDrawCars(car)
 {
-	for(i=0;i<vehicles.length;i++)
-	{
-		vehicles[i].draw();
-		//console.log(carstogen);
-	}
+    car.update();
+    car.draw();
+}
+function removeOutOfBoundCars(car, index, arr)
+{
+    if(car.x > CANVAS_WIDTH || car.x < 0 || car.y > CANVAS_HEIGHT || car.y < 0)
+        arr.splice(index, 1);
 }
 //running is a var to show whether the canvas has been drawn or not
 /*
@@ -167,11 +154,9 @@ function drawCanvas()
 }
 */
 function master(){
-	handleCollision();
+	//handleCollision();
 	ctx.clearRect(0,0,canvas.width,canvas.height);
-	ctx.fillStyle=("#00ff30");
-	ctx.fillRect(0,0,canvas.width,canvas.height);
-	ctx.fillStyle=("#6a6a6a");
+	ctx.strokeRect(0,0,canvas.width,canvas.height);
 	horizontalRoad.draw(intPoint.x);
 	verticalRoad.draw(intPoint.y);
 	sliderControl();
@@ -180,10 +165,12 @@ function master(){
 		setInterval(spawn_car, timeinterval*1000);
 		spawnState = false;
 	}
-	drawCar();
+	vehicles.forEach(updateDrawCars);
+    vehicles.forEach(removeOutOfBoundCars);
 	console.log(vehicles);
 	window.requestAnimationFrame(master);
 }
+/*
 function handleCollision(){
 	var colliding = collidingCars();
 	// Figure out which vehicles sets aren't colliding anymore
@@ -197,7 +184,7 @@ function handleCollision(){
 		i[0].accel = -1;
 	}
 	collVeh = colliding;
-}
+}*/
 function collidingCars()
 {
 	var colliding = new Set();
