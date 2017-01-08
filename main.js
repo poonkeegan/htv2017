@@ -166,7 +166,7 @@ function drawCanvas()
 function master(){
 	ctx.clearRect(0,0,canvas.width,canvas.height);
 	ctx.fillStyle=("#2f9f20");
-	ctx.filleRect(0,0,canvas.width,canvas.height);
+	ctx.fillRect(0,0,canvas.width,canvas.height);
 	ctx.fillStyle=("#6a6a6a");
 	horizontalRoad.draw(intPoint.x);
 	verticalRoad.draw(intPoint.y);
