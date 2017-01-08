@@ -1,6 +1,7 @@
 function Vehicle(x, y, w, h, a) {
 	this.x = x;
 	this.y = y;
+	var carImg = document.getElementById("carImage");
 	this.width = w;
 	this.height = h;
 	this.angle = a;
@@ -21,9 +22,10 @@ function Vehicle(x, y, w, h, a) {
 		ctx.save();
 		ctx.translate(this.x + this.width/2, this.y + this.height/2);
 		ctx.rotate(this.angle);
-		ctx.fillStyle=("#FF0000");
-		ctx.fillRect(0, 0, this.width, this.height);
-		ctx.fillStyle=("#6a6a6a");
+		//ctx.fillStyle=("#FF0000");
+		//ctx.fillRect(0, 0, this.width, this.height);
+		//ctx.fillStyle=("#6a6a6a");
+		ctx.drawImage(carImg,0,0);
 		ctx.restore();
 		//Strok Erect
 		//TBTacoLeft TBTacoCheesePull TBTacoRight
