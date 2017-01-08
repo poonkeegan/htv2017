@@ -84,26 +84,26 @@ function spawn_car()
 		}
 		if (start_position == 0)
 		{
-			x = verticalRoad.position+6;
-			y = 0;
+			x = verticalRoad.position+((ROAD_WIDTH)/12);
+			y = -30;
 			a = rad(0);
 		}
 		else if (start_position == 1)
 		{
-			x = 0;
-			y = horizontalRoad.position+6;
+			x = 40;
+			y = horizontalRoad.position+((3*ROAD_WIDTH)/5);
 			a = rad(90);
 		}
 		else if (start_position == 2)
 		{
-			x = canvas.width - 30;
-			y = horizontalRoad.position+6;
+			x = canvas.width - 70;
+			y = horizontalRoad.position+((ROAD_WIDTH)/12);
 			a = rad(270);
 		}
 		else if (start_position == 3)
 		{
-			x = verticalRoad.position+6;
-			y = canvas.height - 60;
+			x = verticalRoad.position+((9*ROAD_WIDTH)/12);
+			y = canvas.height-30;
 			a = rad(180);
 		}
 		vehicles.push(new Vehicle(x,y,30,60,a));
