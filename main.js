@@ -14,8 +14,9 @@ var intPoint = null;
 var timeinterval = null;
 var carstogen = null;
 //creating roads
-var spawnState = true;
-
+var spawnInterval = null;
+var spawnState = false;
+var generated = false;
 // which cars were colliding with ea/other
 var collVeh = new Set();
 function start()
@@ -82,6 +83,7 @@ function start()
 
 function spawn_car()
 {
+	generated = true;
 	for (i=0;i<carstogen;i++)
 	{
 		var randPoint = Math.floor(Math.random()*spawnPoints.length);
@@ -96,6 +98,7 @@ function spawn_car()
             a = NORTH;
 		vehicles.push(new Vehicle(spawnPoints[randPoint].x, spawnPoints[randPoint].y, 30, 60, a));
 	}
+	
 }
 
 function updateDrawCars(car)
@@ -161,15 +164,20 @@ function master(){
 	ctx.fillStyle = "#727272"
 	horizontalRoad.draw(intPoint.x);
 	verticalRoad.draw(intPoint.y);
-	sliderControl();
-	if(spawnState)
+	if(!spawnState)
 	{
-		setInterval(spawn_car, timeinterval*1000);
-		spawnState = false;
+		spawnInterval = setInterval(spawn_car, timeinterval*1000);
+		spawnState = true;
 	}
+	else if(spawnState && generated)
+	{
+		clearInterval(spawnInterval);
+		spawnState = false;
+		generated = false;
+	}
+	sliderControl();
 	vehicles.forEach(updateDrawCars);
     vehicles.forEach(removeOutOfBoundCars);
-	console.log(vehicles);
 	window.requestAnimationFrame(master);
 }
 /*
