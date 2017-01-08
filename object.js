@@ -8,6 +8,7 @@ function Vehicle(x, y, w, h, t, end) {
 	this.accel = 0;
 	this.speed = 4;
 	this.maxSpeed = 4;
+	this.minSpeed = 0.5;
     this.turn = t;
     this.end = end;
 	this.xspeed = function () {
@@ -51,6 +52,9 @@ function Vehicle(x, y, w, h, t, end) {
         if(this.speed > this.maxSpeed){
         	this.speed = this.maxSpeed;
         	this.accel--;
+        }
+        if (this.speed< this.minSpeed){
+        	this.speed=this.minSpeed;
         }
         this.x += this.xspeed();
         this.y += this.yspeed();

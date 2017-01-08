@@ -148,9 +148,27 @@ function side(point)
 }
 function spawn_car()
 {
+	var lastSpawn = null;
 	for (i=0;i<carstogen;i++)
 	{
 		var rand1 = Math.floor(Math.random()*spawnPoints.length);
+		if(lastSpawn == null)
+ 		{
+ 			lastSpawn = rand1;
+ 		}
+ 		else if(lastSpawn == rand1)
+ 		{
+ 			while(lastSpawn == rand1)
+ 			{
+ 				rand1 = Math.floor(Math.random()*spawnPoints.length);
+ 			}
+ 			lastSpawn = rand1;
+ 		}
+ 		else
+ 		{
+ 			lastSpawn = rand1;
+ 		}
+ 		console.log(lastSpawn)
         var startPoint = spawnPoints[rand1];
         do{
             var rand2 = Math.floor(Math.random()*endPoints.length);
@@ -165,9 +183,9 @@ function spawn_car()
             vehicles.push(new Vehicle(startPoint.x, startPoint.y, 30, 60, SOUTH, endPoint));
         else if(startPoint.y == CANVAS_HEIGHT-1)
             vehicles.push(new Vehicle(startPoint.x, startPoint.y, 30, 60, NORTH, endPoint));
-	}
+	lastSpawn = null;
 }
-
+}
 function updateDrawCars(car)
 {
     car.update();
@@ -181,6 +199,7 @@ function removeOutOfBoundCars(car, index, arr)
 }
 function master(){
 	//handleCollision();
+	collidingCars();
 	//ctx.fillStyle = "#00ff3c"
 	ctx.clearRect(0,0,canvas.width,canvas.height);
 	//ctx.fillRect(0,0,canvas.width,canvas.height);
@@ -204,20 +223,7 @@ function sliderControl()
     clearInterval(spawnInterval);
     spawnInterval = setInterval(spawn_car, timeinterval*1000);
 }
-function handleCollision(){
-	var colliding = collidingCars();
-	// Figure out which vehicles sets aren't colliding anymore
-	var notColliding = collVeh.difference(colliding);
-	for(let i of notColliding){
-		i[0].accel = 1;
-	}
-	// Figure out which are
-	for(let i of colliding){	
-		//Slow down i[0]
-		i[0].speed = i[0].speed/3;
-	}
-	collVeh = colliding;
-}
+
 function collidingCars()
 {
 	var colliding = new Set();
@@ -225,18 +231,31 @@ function collidingCars()
 		for (j = 0; j < vehicles.length; j++){
 			var xDist = Math.abs(vehicles[i].x - vehicles[j].x);
 			var yDist = Math.abs(vehicles[i].y - vehicles[j].y);
+			
 			if(vehicles[i].end == NORTH || vehicles[i].end == SOUTH){
 				angle = Math.abs(Math.atan(xDist/yDist));
+
 			}
 			else{
 				angle = Math.abs(Math.atan(yDist/xDist));
-			}			
-			if (xDist*xDist + yDist*yDist < 10000 && angle < Math.PI/3){ // < radius^2 (radius = 60)
-				colliding.add([vehicles[i], vehicles[j]]);
+			}
+			if ((vehicles[i].end == NORTH && vehicles[j].end == SOUTH) || vehicles[i]==SOUTH && vehicles[j]==NORTH){
+
+			}
+			else if ((vehicles[i].end == EAST && vehicles[j].end == WEST) || vehicles[i]==WEST && vehicles[j]==EAST)
+			{
+
+			}
+			else if (xDist*xDist + yDist*yDist < 10000 && angle < Math.PI/3){ // < radius^2 (radius = 60)
+				vehicles[i].accel = (xDist*xDist)+(yDist*yDist) - 400000;
+			}
+			else if (!(xDist*xDist + yDist*yDist < 10000 && angle < Math.PI/3)){ // < radius^2 (radius = 60)
+				
+				vehicles[i].accel = 0.1;
 			}
 		}
 	}
-	return colliding;
+	
 }
 
 function boxCollision(x1,y1,w1,h1,x2,y2,w2,h2){
