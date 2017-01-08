@@ -181,6 +181,20 @@ function master(){
 	window.requestAnimationFrame(master);
 }
 
+function collidingCars()
+{
+	var colliding = new Set();
+	for (i = 0; i < vehicles.length - 1; i++) {
+		for (j = i + 1; j < vehicles.length; j++){
+			var xDistSq = (vehicles[i].x - vehicles[j].x) * (vehicles[i].x - vehicles[j].x);
+			var yDistSq = (vehicles[i].y - vehicles[j].y) * (vehicles[i].y - vehicles[j].y);
+			if (xDistSq + yDistSq < 3600){
+				colliding.add([vehicles[i], vehicles[j]]);
+			}
+		}
+	}
+	return colliding;
+}
 function sliderControl()
 {
 	timeslider = document.getElementById("timeslider");
