@@ -168,7 +168,6 @@ function spawn_car()
  		{
  			lastSpawn = rand1;
  		}
- 		console.log(lastSpawn)
         var startPoint = spawnPoints[rand1];
         do{
             var rand2 = Math.floor(Math.random()*endPoints.length);
