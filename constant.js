@@ -1,2 +1,3 @@
 const CANVAS_WIDTH = 1080;
 const CANVAS_HEIGHT = 720;
+const ROAD_WIDTH = 200;

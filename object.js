@@ -34,7 +34,7 @@ function Road(w, s, p, l) {
 	// How far from the origin does this road start from
 	this.position = p;
 	// speed limit
-	this.limit = l
+	this.limit = l;
 	this.draw = function (end){
 		if(this.side == 0){
 			ctx.fillRect(this.position, 0, this.width, end);

@@ -7,14 +7,22 @@
     <script src="constant.js"></script>
     <script src="object.js"></script>
     <script src="helperFunctions.js"></script>
+    <script src = "drawing.js"></script>
   </head>
   <body>
-	<script src="main.js"></script>
-	<input type="button" id = "start" onclick="drawCanvas();" value = "Start"></input>
+	
+	<input type="button" id = "start" value = "Start"></input>
 	<p id = "formtext"> Choose an intersection type</p>
 	<form id = "interform">
 		<input type="radio" name="intersection" value="4-way" id = "4way" checked> 4 Way </input>
 		<input type="radio" name="intersection" value="T" id = "T"> T </input>		
 	</form>
+	<p id = "carslidertext">Choose number of cars to generate</p>
+	<input id = "carslider" type = "range" min = "1" max = "3"></input>
+	<p id = "carinterval"></p>
+	<p id = "timeslidertext">Choose interval of car generation</p>
+	<input id = "timeslider" type = "range" min = "1" max = "5"></input>
+	<p id = "timeinterval"></p>
+	<script src="main.js"></script>
   </body>
 </html>

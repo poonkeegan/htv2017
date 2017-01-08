@@ -2,17 +2,77 @@ var canvas = document.createElement("canvas");
 canvas.width = CANVAS_WIDTH;
 canvas.height = CANVAS_HEIGHT;
 var ctx = canvas.getContext("2d");
+Tbutton = document.getElementById("T");
+fourwaybutton = document.getElementById("4way");
+iform = document.getElementById("interform");
 
+formtext = document.getElementById("formtext");
+//roads = [];
+//vehicles = [];
+var exits = [];
+var intPoint = null;
+//creating roads
+function start()
+{
+	exits = [];
+	Tchecked = (Tbutton == null)?false:Tbutton.checked;
+	var randroad= Math.floor(Math.random()*4);
+	var randlenv = (0.85*canvas.height)*Math.random()+(canvas.width*0.1);
+	var randlenh = (0.3*canvas.width)*Math.random()+(canvas.height*0.1);
+	var speed_lim = 1;
+	if(randroad == 0 || randroad == 3)
+	{
+		verticalRoad = new Road(ROAD_WIDTH, randroad, randlenv, speed_lim);
+		horizontalRoad = new Road(ROAD_WIDTH, 1, randlenh, speed_lim);
+	}
+	else
+	{
+		verticalRoad = new Road(ROAD_WIDTH, 0, randlenv, speed_lim);
+		horizontalRoad = new Road(ROAD_WIDTH, randroad, randlenh, speed_lim);
+	}
+	
+	if(Tchecked)
+	{
+		if (Math.round(Math.random()))
+		{
+			verticalRoad.side = 0;
+			intPoint = new Point(verticalRoad.position+1, CANVAS_HEIGHT);
+			exits.push(0);
+			exits.push(horizontalRoad.side);
+			exits.push(3);
+		}
+		else
+		{
+			horizontalRoad.side = 1;
+			intPoint = new Point(CANVAS_WIDTH, horizontalRoad.position+1);
+			exits.push(1);
+			exits.push(2);
+			exits.push(verticalRoad.side);
+		}
+	}
+	else
+	{
+		horizontalRoad.side = 1;
+		verticalRoad.side = 0;
+		intPoint = new Point(CANVAS_WIDTH, CANVAS_HEIGHT);
+		exits.push(0);
+		exits.push(1);
+		exits.push(2);
+		exits.push(3);
+	}
+	master();
+}
 //running is a var to show whether the canvas has been drawn or not
+/*
 var running = false;
 function drawCanvas()
 {
-	var sbutton = document.getElementById("start");
-	var Tbutton = document.getElementById("T");
-	var fourwaybutton = document.getElementById("4way");
-	var iform = document.getElementById("interform");
-	var Tchecked = Tbutton.checked;
-	var formtext = document.getElementById("formtext");
+	sbutton = document.getElementById("start");
+	Tbutton = document.getElementById("T");
+	fourwaybutton = document.getElementById("4way");
+	iform = document.getElementById("interform");
+	Tchecked = (Tbutton == null)?false:Tbutton.checked;
+	formtext = document.getElementById("formtext");
 	//if more than 2 intersections add more variables and booleans
 	if(!running)
 	{
@@ -27,7 +87,7 @@ function drawCanvas()
 			create4Way();
 		}
 		ctx.fillStyle=("#BED0BE");
-		ctx.fillRect(100,100,35,70);
+		//ctx.fillRect(100,100,35,70);
 		document.body.appendChild(canvas);
 		sbutton.value="Stop";
 		running = true;
@@ -42,47 +102,30 @@ function drawCanvas()
 		running = false;
 		iform.style.visibility = "visible";
 		formtext.style.visibility = "visible";
+		//roads = [];
 	}
-}
 
-function create4Way()
-{
-	road_width = 200;
-	hbound = 0.3;
-	vbound = 0.85;
-	hoffset = 0.1;
-	voffset = 0.1;
-	randlenv = (vbound*canvas.height)*Math.random()+(canvas.width*voffset);
-	randlenh = (hbound*canvas.width)*Math.random()+(canvas.height*hoffset);
-	horizontalRoad = new Road(road_width, 1, randlenh);
-	verticalRoad = new Road(road_width, 0, randlenv);
-	horizontalRoad.draw(canvas.width);
-	verticalRoad.draw(canvas.height);
 }
-
-function createTRoad()
-{
-	road_width = 200;	
-	randroad = (4*Math.random());
-	randroad = Math.floor(randroad);	
-	hbound = 0.3;
-	vbound = 0.85;
-	hoffset = 0.1;
-	voffset = 0.1;
-	randlenv = (vbound*canvas.height)*Math.random()+(canvas.width*voffset);
-	randlenh = (hbound*canvas.width)*Math.random()+(canvas.height*hoffset);
-	if(randroad == 0 || randroad == 3)
-	{
-		verticalRoad = new Road(road_width, randroad, randlenv);
-		horizontalRoad = new Road(road_width, 1, randlenh);
-		horizontalRoad.draw(canvas.width);
-		verticalRoad.draw(randlenh + 1);
-	}
-	else{
-		verticalRoad = new Road(road_width, 0, randlenv);
-		horizontalRoad = new Road(road_width, randroad, randlenh);
-		horizontalRoad.draw(randlenv + 1);
-		verticalRoad.draw(canvas.height);
-		console.log("randlenv: " + randlenv + " randlenh: " + randlenh + " randroad: " + randroad);
-	}
+*/
+function master(){
+	if(intPoint != null){window.alert(horizontalRoad.side);}
+	ctx.clearRect(0,0,canvas.width,canvas.height);
+	ctx.strokeRect(0,0,canvas.width,canvas.height);
+	horizontalRoad.draw(intPoint.x);
+	verticalRoad.draw(intPoint.y);
+	sliderControl();
+	window.requestAnimationFrame(master);
 }
+function sliderControl()
+{
+	var timeinterval = document.getElementById("timeslider");
+	document.getElementById("timeinterval").innerHTML = timeinterval.value;
+	var carstogen = document.getElementById("carslider");
+	document.getElementById("carinterval").innerHTML = carstogen.value;
+}
+function test()
+{
+	window.alert("butt");
+}
+document.getElementById("start").onclick = start;
+document.body.appendChild(canvas);
