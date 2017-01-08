@@ -49,4 +49,24 @@ function Road(w, s, p, l) {
 
 		}
 	}
+
+	
+function Intersection(hRoad, vRoad) {
+	this.horRoad = hRoad;
+	this.verRoad = vRoad;
+	this.x = vRoad.p;
+	this.y = hRoad.p;
+	this.intersections = new Array(4);
+	this.setInter = new function(pos, inter){
+		intersections[pos] = inter;
+	}
+	this.getInterDist = new function(interPos){
+		if(interPos < 0 || interPos >= 4){
+			return -1;
+		}else if(interPos == 0 || interPos == 3) {
+			return Math.abs(this.y - this.intersections[interPos].y);
+		}else {
+			return Math.abs(this.x - this.intersections[interPos].y);
+		}
+	}
 }
