@@ -180,7 +180,14 @@ function master(){
 	console.log(vehicles);
 	window.requestAnimationFrame(master);
 }
-
+function handleCollision(){
+	var colliding = collidingCars();
+	for(let i of colliding){
+		//Slow down i[0]
+		// e.x. i[0].accel = -1;
+		// or i[0].speed = i[0].speed/2;
+	}
+}
 function collidingCars()
 {
 	var colliding = new Set();
