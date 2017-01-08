@@ -49,6 +49,7 @@ function Road(w, s, p, l) {
 
 		}
 	}
+}
 
 	
 function Intersection(hRoad, vRoad) {
