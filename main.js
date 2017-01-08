@@ -5,10 +5,9 @@ var ctx = canvas.getContext("2d");
 Tbutton = document.getElementById("T");
 fourwaybutton = document.getElementById("4way");
 iform = document.getElementById("interform");
-
 formtext = document.getElementById("formtext");
 //roads = [];
-//vehicles = [];
+vehicles = [];
 var exits = [];
 var intPoint = null;
 //creating roads
@@ -61,6 +60,46 @@ function start()
 		exits.push(3);
 	}
 	master();
+}
+
+function spawncar()
+{
+	for (i = 0; i<num_cars; i++)
+	{
+		if (!Tchecked)
+		{
+			start_position = math.floor(3*math.random()+1);
+			
+		}
+		else
+		{
+			start_position = math.floor(2*math.random());
+			start_position = exits[start_position]
+				
+		}
+		if (start_position == 0)
+			{
+				x = verticalroad.position+6
+				y = 0
+			}
+			elif (start_position == 1)
+			{
+				x = 0
+				y = horizontalroad.position+6
+			}
+			elif (start_position == 2)
+			{
+				x = canvas.width
+				y=horizontalroad.position+6
+			}
+			elif (start_position == 3)
+			{
+				x = verticalroad.position+6
+				y = canvas.height
+			}
+
+		vehicles.push(new Vehicle(x,y,30,60,0))
+	}
 }
 //running is a var to show whether the canvas has been drawn or not
 /*
