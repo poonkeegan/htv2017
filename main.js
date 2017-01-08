@@ -17,6 +17,7 @@ var carstogen = null;
 var spawnInterval = null;
 var spawnState = false;
 var generated = false;
+var lastSpawn = null;
 // which cars were colliding with ea/other
 var collVeh = new Set();
 function start()
@@ -87,6 +88,22 @@ function spawn_car()
 	for (i=0;i<carstogen;i++)
 	{
 		var randPoint = Math.floor(Math.random()*spawnPoints.length);
+		if(lastSpawn == null)
+		{
+			lastSpawn = randPoint;
+		}
+		else if(lastSpawn == randPoint)
+		{
+			while(lastSpawn == randPoint)
+			{
+				randPoint = Math.floor(Math.random()*spawnPoints.length);
+			}
+			lastSpawn = randPoint;
+		}
+		else
+		{
+			lastSpawn = randPoint;
+		}
         var point = spawnPoints[randPoint];
         if(point.x == 1)
             a = EAST;
@@ -98,13 +115,14 @@ function spawn_car()
             a = NORTH;
 		vehicles.push(new Vehicle(spawnPoints[randPoint].x, spawnPoints[randPoint].y, 30, 60, a));
 	}
-	
+	lastSpawn = null;
 }
 
 function updateDrawCars(car)
 {
     car.update();
     car.draw();
+    //console.log(car.speed);
 }
 function removeOutOfBoundCars(car, index, arr)
 {
