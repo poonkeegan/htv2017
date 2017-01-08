@@ -21,9 +21,9 @@ function Vehicle(x, y, w, h, a) {
 		ctx.save();
 		ctx.translate(this.x + this.width/2, this.y + this.height/2);
 		ctx.rotate(this.angle);
+		ctx.fillStyle=("#FF0000");
 		ctx.fillRect(0, 0, this.width, this.height);
-		document.getElementById('carImage').style.left=((this.width).toString()+"px");
-		document.getElementById('carImage').style.top=(this.height).toString()+"px";
+		ctx.fillStyle=("#6a6a6a");
 		ctx.restore();
 		//Strok Erect
 		//TBTacoLeft TBTacoCheesePull TBTacoRight
