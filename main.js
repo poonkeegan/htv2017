@@ -176,9 +176,11 @@ function drawCanvas()
 */
 function master(){
 	//handleCollision();
-	ctx.fillStyle = "#00ff3c"
+	//ctx.fillStyle = "#00ff3c"
 	ctx.clearRect(0,0,canvas.width,canvas.height);
-	ctx.fillRect(0,0,canvas.width,canvas.height);
+	//ctx.fillRect(0,0,canvas.width,canvas.height);
+	ctx.strokeRect(0,0,canvas.width,canvas.height);
+	ctx.drawImage(document.getElementById("grassImage"),0,0);
 	ctx.fillStyle = "#727272"
 	horizontalRoad.draw(intPoint.x);
 	verticalRoad.draw(intPoint.y);
