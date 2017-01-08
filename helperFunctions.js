@@ -43,3 +43,11 @@ function lineIntersect(line1, line2)
 {
 	return lineTouchesOrCrosses(line1, line2) && lineTouchesOrCrosses(line2, line1);
 }
+
+Set.prototype.difference = function(setB) {
+    var difference = new Set(this);
+    for (var elem of setB) {
+        difference.delete(elem);
+    }
+    return difference;
+}
