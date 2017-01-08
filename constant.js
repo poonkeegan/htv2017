@@ -5,3 +5,4 @@ const WEST = -90;
 const EAST = 90;
 const NORTH = 180;
 const SOUTH = 0;
+const TURN_DIST = 113;

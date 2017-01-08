@@ -1,14 +1,15 @@
-function Vehicle(x, y, w, h, a) {
+function Vehicle(x, y, w, h, t, end) {
 	this.x = x;
 	this.y = y;
 	var carImg = document.getElementById("carImage");
 	this.width = w;
 	this.height = h;
-	this.angle = a;
+	this.angle = t;
 	this.accel = 0;
 	this.speed = 4;
 	this.maxSpeed = 4;
-    this.turn = null;
+    this.turn = t;
+    this.end = end;
 	this.xspeed = function () {
 		return Math.sin(rad(this.angle)) * this.speed;
 	};
@@ -16,6 +17,25 @@ function Vehicle(x, y, w, h, a) {
 		return Math.cos(rad(this.angle)) * this.speed;
 	};
 	this.update = function() {
+        if(this.y != this.end.y && this.x != this.end.x)
+        {
+            if(this.turn == EAST && this.x - this.end.x >= -TURN_DIST)
+            {
+                this.turn = (this.end.y == 1) ? NORTH: SOUTH;
+            }
+            else if(this.turn == WEST && this.x - this.end.x <= TURN_DIST)
+            {
+                this.turn = (this.end.y == 1) ? -NORTH: SOUTH;
+            }
+            else if(this.turn == SOUTH && this.y - this.end.y >= -TURN_DIST) 
+            {
+                this.turn = (this.end.x == 1) ? WEST: EAST;
+            }
+            else if(this.turn == NORTH && this.y - this.end.y <= TURN_DIST)
+            {
+                this.turn == (this.end.x == 1)? -WEST : EAST;
+            }
+        }
 		if(this.turn && this.angle != this.turn)
         {
             if(this.angle < this.turn)
