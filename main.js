@@ -175,7 +175,7 @@ function drawCanvas()
 }
 */
 function master(){
-	//handleCollision();
+	handleCollision();
 	//ctx.fillStyle = "#00ff3c"
 	ctx.clearRect(0,0,canvas.width,canvas.height);
 	//ctx.fillRect(0,0,canvas.width,canvas.height);
@@ -200,7 +200,7 @@ function master(){
     vehicles.forEach(removeOutOfBoundCars);
 	window.requestAnimationFrame(master);
 }
-/*
+
 function handleCollision(){
 	var colliding = collidingCars();
 	// Figure out which vehicles sets aren't colliding anymore
@@ -211,18 +211,24 @@ function handleCollision(){
 	// Figure out which are
 	for(let i of colliding){	
 		//Slow down i[0]
-		i[0].accel = -1;
+		i[0].speed = i[0].speed/3;
 	}
 	collVeh = colliding;
-}*/
+}
 function collidingCars()
 {
 	var colliding = new Set();
-	for (i = 0; i < vehicles.length - 1; i++) {
-		for (j = i + 1; j < vehicles.length; j++){
-			var xDistSq = (vehicles[i].x - vehicles[j].x) * (vehicles[i].x - vehicles[j].x);
-			var yDistSq = (vehicles[i].y - vehicles[j].y) * (vehicles[i].y - vehicles[j].y);
-			if (xDistSq + yDistSq < 3600){ // < radius^2 (radius = 60)
+	for (i = 0; i < vehicles.length; i++) {
+		for (j = 0; j < vehicles.length; j++){
+			var xDist = Math.abs(vehicles[i].x - vehicles[j].x);
+			var yDist = Math.abs(vehicles[i].y - vehicles[j].y);
+			if(vehicles[i].end == NORTH || vehicles[i].end == SOUTH){
+				angle = Math.abs(Math.atan(xDist/yDist));
+			}
+			else{
+				angle = Math.abs(Math.atan(yDist/xDist));
+			}			
+			if (xDist*xDist + yDist*yDist < 10000 && angle < Math.PI/3){ // < radius^2 (radius = 60)
 				colliding.add([vehicles[i], vehicles[j]]);
 			}
 		}
@@ -237,6 +243,12 @@ function sliderControl()
 	carslider = document.getElementById("carslider");
 	document.getElementById("carinterval").innerHTML = carslider.value;
 	carstogen = carslider.value;
+}
+function boxCollision(x1,y1,w1,h1,x2,y2,w2,h2){
+	return (x1 < x2 + w2 &&
+   x1 + w1 > x2 &&
+   y1 < y2 + h2 &&
+   rh1 + y1 > y2);
 }
 
 document.getElementById("start").onclick = start;
